@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -22,9 +24,20 @@ public class Motorista {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@NotBlank(message = "O atributo nome é Obrigatório!")
 	@Size(max = 100)
 	private String nome;
+
+	@NotBlank(message = "O atributo usuario não deve ser nulo")
+	@Size(max = 50, message = "O usuario não deve ser maior que 50 caracteres")
+	@Schema(example = "email@email.com.br")
+	@Email
+	private String motorista;
+
+	@Size(min = 8,  message = "O senha não deve ser menor que 8 e maioque 12 caracteres")
+	@NotBlank(message = "O atributo senha não deve ser nulo")
+	private String senha;
 
 	private String foto;
 
@@ -58,6 +71,22 @@ public class Motorista {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getMotorista() {
+		return motorista;
+	}
+
+	public void setMotorista(String motorista) {
+		this.motorista = motorista;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	public String getFoto() {

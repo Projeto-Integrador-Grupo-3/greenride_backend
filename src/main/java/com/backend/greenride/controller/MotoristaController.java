@@ -2,6 +2,9 @@ package com.backend.greenride.controller;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.backend.greenride.model.MotoristaLogin;
+import com.backend.greenride.service.MotoristaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +29,12 @@ import jakarta.validation.Valid;
 public class MotoristaController {
 
 	@Autowired
-	private MotoristaRepository motoristaRepository;
+	public MotoristaRepository motoristaRepository;
 
-	@GetMapping
+	@Autowired
+	public MotoristaService motoristaService;
+
+	@GetMapping("/all")
 	public ResponseEntity<List<Motorista>> getAll() {
 		return ResponseEntity.ok(motoristaRepository.findAll());
 	}
@@ -49,6 +55,32 @@ public class MotoristaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(motoristaRepository.save(motorista));
 	}
 
+	@PostMapping("/logar")
+	public ResponseEntity<MotoristaLogin> autenticarMotorista(@RequestBody Optional<MotoristaLogin> motoristaLogin){
+
+		return motoristaService.autenticarMotorista(motoristaLogin)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
+
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Motorista> postMostorista(@RequestBody @Valid Motorista motorista) {
+
+		return motoristaService.cadastrarMotorista(motorista)
+				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+
+	}
+
+	@PutMapping("/atualizar")
+	public ResponseEntity<Motorista> putMotorista(@Valid @RequestBody Motorista motorista) {
+
+		return motoristaService.atualizarMotorista(motorista)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+
+	}
+
 	@PutMapping
 	public ResponseEntity<Motorista> put(@Valid @RequestBody Motorista motorista) {
 		return motoristaRepository.findById(motorista.getId())
@@ -59,8 +91,8 @@ public class MotoristaController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
-		Optional<Motorista> postagem = motoristaRepository.findById(id);
-		if (postagem.isEmpty())
+		Optional<Motorista> motorista = motoristaRepository.findById(id);
+		if (motorista.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		motoristaRepository.deleteById(id);
 	}

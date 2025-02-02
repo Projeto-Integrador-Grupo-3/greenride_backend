@@ -64,6 +64,8 @@ public class BasicSecurityConfig {
 	        .authorizeHttpRequests((auth) -> auth
 	                .requestMatchers("/usuario/logar").permitAll()
 	                .requestMatchers("/usuario/cadastrar").permitAll()
+                    .requestMatchers("/motorista/logar").permitAll()
+                    .requestMatchers("/motorista/cadastrar").permitAll()
 	                .requestMatchers("/error/**").permitAll()
 	                .requestMatchers(HttpMethod.OPTIONS).permitAll()
 	                .anyRequest().authenticated())
