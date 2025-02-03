@@ -34,12 +34,16 @@ public class Usuario {
 	@Schema(example = "email@email.com.br")
 	@Email
 	private String usuario;
+	
+	@NotBlank
+	private String tipo;
 
 	@Size(min = 8,  message = "O senha não deve ser menor que 8 e maioque 12 caracteres")
 	@NotBlank(message = "O atributo senha não deve ser nulo")
 	private String senha;
 
 	private String foto;
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("motorista")
@@ -69,6 +73,14 @@ public class Usuario {
 		this.usuario = usuario;
 	}
 
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	public String getSenha() {
 		return senha;
 	}
@@ -85,6 +97,7 @@ public class Usuario {
 		this.foto = foto;
 	}
 
+	
 	public List<Corrida> getCorrida() {
 		return corrida;
 	}
@@ -92,5 +105,7 @@ public class Usuario {
 	public void setCorrida(List<Corrida> corrida) {
 		this.corrida = corrida;
 	}
+
+	
 
 }

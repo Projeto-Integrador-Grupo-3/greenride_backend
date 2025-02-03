@@ -30,6 +30,8 @@ public class Corrida {
 	@NotNull
 	private Double velocidadeKh;
 	
+	private boolean status; 
+	
 	private Double valor;
 	
 	private Double tempo;
@@ -104,6 +106,22 @@ public class Corrida {
 
 	public void setMotorista(Motorista motorista) {
 		this.motorista = motorista;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	
